@@ -11,10 +11,9 @@ var mongojs = require('mongojs');
 var db = mongojs.connect(process.env.MONGOHQ_URL || 'localhost/qrVote', ['Poll']);
 
 
-var  routes = require('./routes')(db);
+var  routes = require('./routes')(app, db);
 
 // Configuration
-
 
 debugger;
 

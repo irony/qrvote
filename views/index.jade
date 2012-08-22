@@ -3,7 +3,17 @@ h1= title
 ul
   each poll in polls
     li 
-      a(href='/poll/' + poll.id)
+      a(href='/poll/' + poll._id)=poll.name
 
 
 a(href='add') Add new poll
+
+
+
+
+script(src="/socket.io/socket.io.js")
+script
+    var socket = io.connect();
+    socket.on('vote', function (data) {
+      window.location.refresh()
+    });
