@@ -33,7 +33,7 @@
 
   self.poll = function(req,res){
     var poll = db.Poll.findOne({_id : db.ObjectId(req.params.id)}, function(err, poll){
-      res.render('poll', {title:poll.name, poll:poll});
+      res.render('poll', {title:poll.name, poll:poll, host: req.headers.host});
     });
   };
 

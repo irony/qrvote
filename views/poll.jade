@@ -4,6 +4,6 @@ ul
   each alternative in poll.alternatives
     li
       - var alternativeId = poll.alternatives.indexOf(alternative)
-      - var href = '/poll/' + poll._id + '/' + alternativeId
+      - var href = 'http://' + host + '/poll/' + poll._id + '/' + alternativeId
         a(href=href)=alternative + ", röster:" + (poll.votes[alternativeId] || []).length
-          img(src='http://chart.apis.google.com/chart?cht=qr&chs=500x500&chl=' + encodeURI(href))
+          img(src='http://chart.apis.google.com/chart?cht=qr&chs=250x250&chl=' + encodeURI(href))
