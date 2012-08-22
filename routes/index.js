@@ -17,7 +17,17 @@ exports.add = function(req, res){
 
 exports.save = function(req,res){
 
-  polls.push({id : polls.length, name : req.body.name, alternatives : req.body.alternatives.split(',')});
-  res.render('index', {title:'Thanks', polls:polls});
+  var poll = {id : polls.length, name : req.body.name, alternatives : req.body.alternatives.split(',')};
+
+  polls[poll.id] = poll;
+
+  res.redirect('/poll/' + poll.id);
+};
+
+exports.poll = function(req,res){
+
+  var poll = polls[req.params.id];
+
+  res.render('poll', {title:poll.name, poll:poll});
 
 };

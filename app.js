@@ -35,6 +35,7 @@ app.configure('production', function(){
 
 app.get('/', routes.index);
 app.get('/add', routes.add);
+app.get('/poll/:id', routes.poll);
 app.post('/save', routes.save);
 
 app.listen(process.env.PORT || 3000);
