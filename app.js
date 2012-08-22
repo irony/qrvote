@@ -13,7 +13,7 @@ var mongojs = require('mongojs');
 
 // TODO: parse from mongohq_url
 var herokuUrl = {
-  auth: 'heroku:e3c0d435e08f62dd53c7e80013fb0475',
+  auth: ['heroku','e3c0d435e08f62dd53c7e80013fb0475'],
   host: 'alex.mongohq.com',
   port: 10038,
   db: 'app6933985'
