@@ -8,7 +8,7 @@ var express = require('express');
 var app = module.exports = express.createServer();
 
 var mongojs = require('mongojs');
-var db = mongojs.connect(process.env.MONGOHQ_URL || 'localhost/qrVote', ['Poll']);
+var db = mongojs.connect((process.env.MONGOHQ_URL|| 'localhost/qrVote').replace('mongodb://', ''), ['Poll']);
 
 
 var  routes = require('./routes')(app, db);
