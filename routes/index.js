@@ -10,6 +10,9 @@
 
   self.index = function(req, res){
     db.Poll.find(function(err, polls){
+     if (err)
+      throw err;
+    
      res.render('index', { title: 'Polls', polls : polls });
    });
   };

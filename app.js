@@ -10,12 +10,16 @@ var app = module.exports = express.createServer();
 var mongojs = require('mongojs');
 
 // var db = mongojs.connect('heroku:e3c0d435e08f62dd53c7e80013fb0475@alex.mongohq.com:10038/app6933985', ['Poll']);
-var db = mongojs.connect({
+
+// TODO: parse from mongohq_url
+var herokuUrl = {
   auth: 'heroku:e3c0d435e08f62dd53c7e80013fb0475',
   host: 'alex.mongohq.com',
   port: 10038,
   db: 'app6933985'
-}, ['Poll']);
+};
+
+var db = mongojs.connect(process.env.MONGOHQ_URL ? herokuUrl : 'localhost/qrVote', ['Poll']);
 
 
 var  routes = require('./routes')(app, db);
