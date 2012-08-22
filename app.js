@@ -10,6 +10,9 @@ var app = module.exports = express.createServer();
 
 // Configuration
 
+
+debugger;
+
 app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
