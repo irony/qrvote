@@ -3,10 +3,15 @@
  * Module dependencies.
  */
 
-var express = require('express')
-  , routes = require('./routes')
+var express = require('express');
 
 var app = module.exports = express.createServer();
+
+var mongojs = require('mongojs');
+var db = mongojs.connect(process.env.MONGOHQ_URL || 'localhost/qrVote', ['Poll']);
+
+
+var  routes = require('./routes')(db);
 
 // Configuration
 
@@ -36,6 +41,7 @@ app.configure('production', function(){
 app.get('/', routes.index);
 app.get('/add', routes.add);
 app.get('/poll/:id', routes.poll);
+app.get('/poll/:id/:alternativeId', routes.vote);
 app.post('/save', routes.save);
 
 app.listen(process.env.PORT || 3000);

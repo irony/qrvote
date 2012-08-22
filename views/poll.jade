@@ -3,4 +3,6 @@ h1=poll.name
 ul
   each alternative in poll.alternatives
     li
-      alternatives
+      - var href = '/poll/' + poll._id + '/' + poll.alternatives.indexOf(alternative)
+        a(href=href)=alternative
+          img(src='http://chart.apis.google.com/chart?cht=qr&chs=500x500&chl=' + encodeURI(href))
