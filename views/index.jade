@@ -3,4 +3,4 @@ p Welcome to #{title}
 
 ul
   each(var poll in polls)
-    li poll
+    li a(href='/poll/' + poll.id)
