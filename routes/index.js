@@ -8,11 +8,13 @@
 
   var self = this;
 
+  var Poll = db.model('Poll', require('../models/poll.js'));
+
   self.index = function(req, res){
-    db.Poll.find(function(err, polls){
+    Poll.find(function(err, polls){
      if (err)
       throw err;
-    
+
      res.render('index', { title: 'Polls', polls : polls });
    });
   };
@@ -24,44 +26,56 @@
 
   self.save = function(req,res){
 
-    var poll = {name : req.body.name, alternatives : req.body.alternatives.split(',').map(function(alternative){return alternative.trim();})};
+    var poll = new Poll({name : req.body.name, alternatives : req.body.alternatives.split(',').map(function(alternative){
+      return {name: alternative.trim(), votes: []};
+    })});
 
-    poll.votes = poll.alternatives.map(function(){return [];});
-
-    db.Poll.save(poll, function(err, poll){
+    poll.save(function(err, poll){
       console.log(poll);
       res.redirect('/poll/' + poll._id);
     });
   };
 
   self.poll = function(req,res){
-    var poll = db.Poll.findOne({_id : db.ObjectId(req.params.id)}, function(err, poll){
+    var poll = Poll.findOne(req.params.id, function(err, poll){
+      
+      if (!poll)
+        return res.redirect('/');
+
       res.render('poll', {title:poll.name, poll:poll, host: req.headers.host});
     });
   };
 
 
   self.vote = function(req,res){
-    var poll = db.Poll.findOne({_id : db.ObjectId(req.params.id)}, function(err, poll){
+    var poll = Poll.findOne(req.params.id, function(err, poll){
+
+      if (!poll)
+        return res.redirect('/');
+
+      var vote = { user: req.user, ip: req.ip, session: req.session };
+
+      var alternatives = poll.alternatives;
+      
+      alternatives[req.params.alternativeId].votes.push(vote);
+
+      poll.set('alternatives', alternatives); // trigger this change, mongoose will not find it otherwise
 
       console.log(poll);
-      poll.votes = poll.votes || [];
 
-      var vote = {};
-      vote.ip = req.ip;
+      poll.save(function(err, poll){
+        if (err)
+          throw err;
       
+        console.log('saved', poll.alternatives);
 
-      poll.votes[req.params.alternativeId].push(vote);
-
-      console.log(poll.votes);
-
-      db.Poll.update({_id: poll._id}, poll, function(err){
         io.sockets.emit('vote', poll);
         res.redirect('/poll/' + poll._id);
       });
 
     });
   };
+      debugger;
 
   return self;
 
