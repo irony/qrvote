@@ -42,8 +42,10 @@
       if (!poll)
         return res.redirect('/');
 
-      var totalVotes = poll.alternatives.reduce(function(a,b){
-        return (a.votes ? a.votes.length : 0) + (b.votes ? b.votes.length : 0);
+      var totalVotes = 0;
+
+      poll.alternatives.forEach(function(alternative){
+        return totalVotes+= alternative.votes.length;
       });
 
       res.render('poll', {title:poll.name, poll:poll, totalVotes: totalVotes, host: req.headers.host});
