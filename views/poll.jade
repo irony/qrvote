@@ -1,10 +1,15 @@
 h1=poll.name
 
-ul
+ul.thumbnails
   each alternative in poll.alternatives
-    li
+    li.thumbnail(class="span" + Math.round(12 / poll.alternatives.length))
       - var alternativeId = poll.alternatives.indexOf(alternative)
-
       - var href = 'http://' + host + '/poll/' + poll._id + '/' + alternativeId
-        a(href=href)=alternative.name + ", röster:" + (alternative.votes).length
+
+        a(href=href, class='preview')
           img(src='http://chart.apis.google.com/chart?cht=qr&chs=250x250&chl=' + encodeURI(href))
+
+          .progress
+            .bar(style="width: " + Math.round((alternative.votes.length / (totalVotes || 10)) * 100) + "%", title=" (" + alternative.votes.length + "/" + totalVotes + ")")
+          
+          h5=alternative.name 

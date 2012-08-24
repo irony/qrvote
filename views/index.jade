@@ -1,19 +1,17 @@
-h1= title
 
-ul
+
+.row
+        .hero-unit
+          h1 Start a poll on the big screen
+          p Use this service to create a poll on conferences, meetings or public places. 
+
+
+.row
   each poll in polls
-    li 
+    .span4
       a(href='/poll/' + poll._id)=poll.name
 
 
-a(href='add') Add new poll
+a(href='add', class='btn') Add new poll
 
 
-
-
-script(src="/socket.io/socket.io.js")
-script
-    var socket = io.connect();
-    socket.on('vote', function (data) {
-      window.location.refresh()
-    });

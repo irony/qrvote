@@ -2,16 +2,32 @@
 html
   head
     title= title
+    link(rel='stylesheet', href='/libs/bootstrap/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/libs/bootstrap/css/bootstrap-responsive.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
-  body!= body
+    script(src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js")
+  body
 
 
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container
+          a.brand(href='/')="QrPoll"
+          ul.nav
+            li
+              a(href='/add')='Add new poll'
 
 
+    .container
+      
 
-script(src="/socket.io/socket.io.js")
-script
-    var socket = io.connect();
-    socket.on('vote', function (data) {
-      window.location.reload();
-    });
+      != body
+
+    script(src="/libs/bootstrap/js/bootstrap.min.js")
+    script(src="/libs/sugarjs/sugar.min.js")
+    script(src="/socket.io/socket.io.js")
+    script
+        var socket = io.connect();
+        socket.on('vote', function (data) {
+          window.location.reload();
+        });

@@ -37,18 +37,22 @@
   };
 
   self.poll = function(req,res){
-    var poll = Poll.findOne(req.params.id, function(err, poll){
+    var poll = Poll.findOne({_id : req.params.id}, function(err, poll){
       
       if (!poll)
         return res.redirect('/');
 
-      res.render('poll', {title:poll.name, poll:poll, host: req.headers.host});
+      var totalVotes = poll.alternatives.reduce(function(a,b){
+        return (a.votes ? a.votes.length : 0) + (b.votes ? b.votes.length : 0);
+      });
+
+      res.render('poll', {title:poll.name, poll:poll, totalVotes: totalVotes, host: req.headers.host});
     });
   };
 
 
   self.vote = function(req,res){
-    var poll = Poll.findOne(req.params.id, function(err, poll){
+    var poll = Poll.findOne({_id : req.params.id}, function(err, poll){
 
       if (!poll)
         return res.redirect('/');
@@ -57,11 +61,7 @@
 
       var alternatives = poll.alternatives;
       
-      alternatives[req.params.alternativeId].votes.push(vote);
-
-      poll.set('alternatives', alternatives); // trigger this change, mongoose will not find it otherwise
-
-      console.log(poll);
+      poll.alternatives[req.params.alternativeId].votes.push(vote);
 
       poll.save(function(err, poll){
         if (err)
@@ -75,7 +75,6 @@
 
     });
   };
-      debugger;
 
   return self;
 
