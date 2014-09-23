@@ -59,6 +59,9 @@
       if (!poll)
         return res.redirect('/');
 
+      if (req.cookies['vote'] == poll._id)
+        throw new Error("You have already voted on this poll");
+
       var vote = { user: req.user, ip: req.ip, session: req.session };
 
       var alternatives = poll.alternatives;
@@ -70,6 +73,8 @@
           throw err;
       
         console.log('saved', poll.alternatives);
+
+        res.cookie('vote', poll._id);
 
         io.sockets.emit('vote', poll);
         res.redirect('/poll/' + poll._id);
