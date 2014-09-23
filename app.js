@@ -11,7 +11,7 @@ var mongoose = require('mongoose');
 
 // var db = mongojs.connect('heroku:e3c0d435e08f62dd53c7e80013fb0475@alex.mongohq.com:10038/app6933985', ['Poll']);
 
-var db = mongoose.createConnection(process.env.MONGOHQ_URL || 'localhost/qrVote');
+var db = mongoose.createConnection(process.env.MONGO_URL || process.env.MONGOHQ_URL || 'localhost/qrVote');
 
 
 
